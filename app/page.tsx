@@ -1,9 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useTranslation } from "react-i18next";
 import { ClipboardCheck, Sparkles, ArrowUpRight, Lock } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Home() {
+  const { t, i18n } = useTranslation();
   const { isSignedIn, user } = useUser();
   const [jobTitle, setJobTitle] = useState("");
   const [experience, setExperience] = useState("");
@@ -13,6 +16,11 @@ export default function Home() {
   const [error, setError] = useState("");
   const [upgraded, setUpgraded] = useState(false);
   const [generateCount, setGenerateCount] = useState(0);
+
+  // 根据语言设置页面 dir
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+  }, [i18n.language]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -32,7 +40,7 @@ export default function Home() {
       body: JSON.stringify({ jobTitle, experience, skills }),
     });
     const data = await res.json();
-    if (data.limitReached) { setError("Free limit reached. Please upgrade to Pro."); setLoading(false); return; }
+    if (data.limitReached) { setError(t("status.limit_reached")); setLoading(false); return; }
     if (data.error) { setError(data.error); setLoading(false); return; }
     setResult(data.text);
     setGenerateCount((c) => c + 1);
@@ -54,27 +62,28 @@ export default function Home() {
             <div className="w-7 h-7 rounded-lg bg-white/[0.08] flex items-center justify-center">
               <ClipboardCheck className="w-4 h-4 text-white/70" />
             </div>
-            <span className="text-sm font-medium text-white/90">Resume AI</span>
+            <span className="text-sm font-medium text-white/90">{t("app.name")}</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            <LanguageSwitcher />
             {isSignedIn ? (
               <>
-                <span className="text-xs text-white/40">{user?.emailAddresses?.[0]?.emailAddress}</span>
+                <span className="text-xs text-white/40 hidden sm:inline">{user?.emailAddresses?.[0]?.emailAddress}</span>
                 {upgraded ? (
-                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-medium">Pro</span>
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-medium">{t("pro")}</span>
                 ) : (
                   <button onClick={upgrade} className="px-3 py-1.5 rounded-md bg-white text-black text-xs font-medium hover:bg-white/90 transition-colors">
-                    Upgrade
+                    {t("button.upgrade")}
                   </button>
                 )}
                 <SignOutButton>
-                  <button className="text-xs text-white/40 hover:text-white/70 transition-colors">Sign out</button>
+                  <button className="text-xs text-white/40 hover:text-white/70 transition-colors">{t("button.sign_out")}</button>
                 </SignOutButton>
               </>
             ) : (
               <SignInButton mode="modal">
                 <button className="px-3 py-1.5 rounded-md bg-white text-black text-xs font-medium hover:bg-white/90 transition-colors">
-                  Sign in
+                  {t("button.sign_in")}
                 </button>
               </SignInButton>
             )}
@@ -89,13 +98,13 @@ export default function Home() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.06] text-xs text-white/40 mb-6">
               <Sparkles className="w-3 h-3" />
-              AI-powered resume generator
+              {t("hero.badge")}
             </div>
             <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
-              Build your resume with AI
+              {t("hero.title")}
             </h1>
             <p className="mt-3 text-sm text-white/40 leading-relaxed max-w-md mx-auto">
-              Describe your experience. Get a professional, ATS-friendly resume in seconds.
+              {t("hero.subtitle")}
             </p>
           </div>
 
@@ -103,14 +112,15 @@ export default function Home() {
           <div className="flex items-center justify-center gap-2 mb-8">
             {isSignedIn ? (
               upgraded ? (
-                <span className="text-xs text-emerald-400/80">✨ Unlimited generations</span>
+                <span className="text-xs text-emerald-400/80">{t("status.unlimited")}</span>
               ) : (
                 <span className="text-xs text-white/30">
-                  {generateCount}/1 free generation{generateCount >= 1 && " — upgrade to continue"}
+                  {t("status.free", { used: generateCount, limit: 1 })}
+                  {generateCount >= 1 && t("status.upgrade_to_continue")}
                 </span>
               )
             ) : (
-              <span className="text-xs text-amber-400/60">Sign in to generate your resume</span>
+              <span className="text-xs text-amber-400/60">{t("status.sign_in_required")}</span>
             )}
           </div>
 
@@ -120,7 +130,7 @@ export default function Home() {
               <span className="text-xs text-red-400/80">{error}</span>
               {error.includes("limit") && (
                 <button onClick={upgrade} className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1">
-                  Upgrade <ArrowUpRight className="w-3 h-3" />
+                  {t("button.upgrade")} <ArrowUpRight className="w-3 h-3" />
                 </button>
               )}
             </div>
@@ -129,29 +139,29 @@ export default function Home() {
           {/* Form Card */}
           <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 space-y-5">
             <div>
-              <label className="block text-xs font-medium text-white/50 mb-2">Target Role</label>
+              <label className="block text-xs font-medium text-white/50 mb-2">{t("form.role")}</label>
               <input
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-white/20 outline-none focus:border-white/[0.15] focus:bg-white/[0.06] transition-colors"
-                placeholder="e.g. Software Engineer, Product Manager"
+                placeholder={t("form.role_placeholder")}
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/50 mb-2">Experience</label>
+              <label className="block text-xs font-medium text-white/50 mb-2">{t("form.experience")}</label>
               <textarea
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-white/20 outline-none focus:border-white/[0.15] focus:bg-white/[0.06] transition-colors resize-none"
-                placeholder="Describe your work experience, responsibilities, and achievements..."
+                placeholder={t("form.experience_placeholder")}
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 rows={4}
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/50 mb-2">Skills</label>
+              <label className="block text-xs font-medium text-white/50 mb-2">{t("form.skills")}</label>
               <input
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-sm text-white placeholder-white/20 outline-none focus:border-white/[0.15] focus:bg-white/[0.06] transition-colors"
-                placeholder="e.g. Python, React, AWS, Product Strategy"
+                placeholder={t("form.skills_placeholder")}
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
               />
@@ -165,15 +175,15 @@ export default function Home() {
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-3.5 h-3.5 rounded-full border-2 border-black/20 border-t-black/80 animate-spin" />
-                  Generating...
+                  {t("generating")}
                 </span>
               ) : !isSignedIn ? (
                 <span className="flex items-center justify-center gap-2">
                   <Lock className="w-3.5 h-3.5" />
-                  Sign in to generate
+                  {t("button.sign_in_to_generate")}
                 </span>
               ) : (
-                "Generate Resume"
+                t("button.generate")
               )}
             </button>
           </div>
@@ -181,9 +191,9 @@ export default function Home() {
           {/* How it works */}
           <div className="mt-12 grid grid-cols-3 gap-6">
             {[
-              { step: "01", title: "Describe", desc: "Tell us about your experience and target role" },
-              { step: "02", title: "Generate", desc: "AI creates an ATS-optimized resume in seconds" },
-              { step: "03", title: "Apply", desc: "Copy the result and start applying to jobs" },
+              { step: t("step.01"), title: t("step.describe"), desc: t("step.describe_desc") },
+              { step: t("step.02"), title: t("step.generate"), desc: t("step.generate_desc") },
+              { step: t("step.03"), title: t("step.apply"), desc: t("step.apply_desc") },
             ].map((item) => (
               <div key={item.step} className="text-center">
                 <div className="text-xs text-white/20 mb-1">{item.step}</div>
@@ -197,12 +207,12 @@ export default function Home() {
           {result && (
             <div className="mt-8 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06]">
-                <span className="text-xs font-medium text-white/50">Generated Resume</span>
+                <span className="text-xs font-medium text-white/50">{t("result.title")}</span>
                 <button
                   onClick={() => navigator.clipboard.writeText(result)}
                   className="px-3 py-1 rounded-md bg-white/[0.06] text-xs text-white/60 hover:bg-white/[0.1] transition-colors"
                 >
-                  Copy
+                  {t("button.copy")}
                 </button>
               </div>
               <pre className="p-5 text-sm text-white/70 leading-relaxed whitespace-pre-wrap font-mono">
@@ -213,9 +223,7 @@ export default function Home() {
 
           {/* Footer */}
           <div className="mt-16 text-center">
-            <p className="text-xs text-white/15">
-              ATS-optimized · AI-powered · Free to start
-            </p>
+            <p className="text-xs text-white/15">{t("footer")}</p>
           </div>
         </div>
       </div>
