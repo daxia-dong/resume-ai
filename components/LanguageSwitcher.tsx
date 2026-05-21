@@ -5,9 +5,18 @@ import { Globe } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 const languages = [
-  { code: "en", label: "EN" },
+  { code: "en", label: "English" },
   { code: "zh", label: "中文" },
+  { code: "es", label: "Español" },
+  { code: "fr", label: "Français" },
+  { code: "pt", label: "Português" },
+  { code: "de", label: "Deutsch" },
+  { code: "ja", label: "日本語" },
+  { code: "ko", label: "한국어" },
+  { code: "ru", label: "Русский" },
+  { code: "hi", label: "हिन्दी" },
   { code: "ar", label: "العربية" },
+  { code: "it", label: "Italiano" },
 ];
 
 export default function LanguageSwitcher() {
@@ -35,7 +44,7 @@ export default function LanguageSwitcher() {
         <span>{current.label}</span>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-28 rounded-lg border border-white/[0.08] bg-[#0a0a0b] py-1 shadow-xl z-50">
+        <div className="absolute right-0 top-full mt-1 w-36 rounded-lg border border-white/[0.08] bg-[#0a0a0b] py-1 shadow-xl z-50 max-h-72 overflow-y-auto">
           {languages.map((lang) => (
             <button
               key={lang.code}
