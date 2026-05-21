@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 import { useTranslation } from "react-i18next";
-import { ClipboardCheck, Sparkles, ArrowUpRight, Lock } from "lucide-react";
+import { ClipboardCheck, Sparkles, Lock } from "lucide-react";
 import posthog from "posthog-js";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -15,7 +15,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
-  const [upgraded, setUpgraded] = useState(false);
   const [generateCount, setGenerateCount] = useState(0);
 
   // 根据语言设置页面 dir
@@ -26,7 +25,6 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("success") === "true") {
-      setUpgraded(true);
       posthog.capture("payment_success");
       window.history.replaceState({}, "", "/");
     }
@@ -43,7 +41,6 @@ export default function Home() {
       body: JSON.stringify({ jobTitle, experience, skills }),
     });
     const data = await res.json();
-    if (data.limitReached) { setError(t("status.limit_reached")); setLoading(false); return; }
     if (data.error) { setError(data.error); setLoading(false); return; }
     setResult(data.text);
     posthog.capture("resume_generated");
@@ -74,13 +71,7 @@ export default function Home() {
             {isSignedIn ? (
               <>
                 <span className="text-xs text-white/40 hidden sm:inline">{user?.emailAddresses?.[0]?.emailAddress}</span>
-                {upgraded ? (
-                  <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-medium">{t("pro")}</span>
-                ) : (
-                  <button onClick={upgrade} className="px-3 py-1.5 rounded-md bg-white text-black text-xs font-medium hover:bg-white/90 transition-colors">
-                    {t("button.upgrade")}
-                  </button>
-                )}
+                <span className="px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 text-xs font-medium">Beta - Free</span>
                 <SignOutButton>
                   <button className="text-xs text-white/40 hover:text-white/70 transition-colors">{t("button.sign_out")}</button>
                 </SignOutButton>
@@ -116,14 +107,7 @@ export default function Home() {
           {/* Usage indicator */}
           <div className="flex items-center justify-center gap-2 mb-8">
             {isSignedIn ? (
-              upgraded ? (
-                <span className="text-xs text-emerald-400/80">{t("status.unlimited")}</span>
-              ) : (
-                <span className="text-xs text-white/30">
-                  {t("status.free", { used: generateCount, limit: 1 })}
-                  {generateCount >= 1 && t("status.upgrade_to_continue")}
-                </span>
-              )
+              <span className="text-xs text-emerald-400/80">✨ Beta - Free during launch</span>
             ) : (
               <span className="text-xs text-amber-400/60">{t("status.sign_in_required")}</span>
             )}
@@ -131,13 +115,8 @@ export default function Home() {
 
           {/* Error */}
           {error && (
-            <div className="mb-6 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
+            <div className="mb-6 p-3 rounded-lg bg-red-500/5 border border-red-500/10">
               <span className="text-xs text-red-400/80">{error}</span>
-              {error.includes("limit") && (
-                <button onClick={upgrade} className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1">
-                  {t("button.upgrade")} <ArrowUpRight className="w-3 h-3" />
-                </button>
-              )}
             </div>
           )}
 
@@ -174,7 +153,7 @@ export default function Home() {
 
             <button
               onClick={generate}
-              disabled={!isSignedIn || loading || (!upgraded && generateCount >= 1)}
+              disabled={!isSignedIn || loading}
               className="w-full py-2.5 rounded-lg bg-white text-black text-sm font-medium hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               {loading ? (
