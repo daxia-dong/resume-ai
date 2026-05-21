@@ -37,7 +37,7 @@ ATS-friendly resume in about 10 seconds. Cover letters too.
 I've been using it myself and it's helped me get more callbacks. Thought I'd share it 
 here in case anyone else is in the same boat.
 
-https://your-domain.com
+https://whole-pants-flow.loca.lt
 
 Would love feedback from people who are actually job hunting right now.
 
@@ -55,7 +55,7 @@ with proper formatting, action verbs, everything.
 
 It's free to try (1 generation). No account needed to see what it does.
 
-https://your-domain.com
+https://whole-pants-flow.loca.lt
 
 Not trying to sell anything. Just sharing something I built that might help people here.
 
@@ -72,7 +72,7 @@ Built with Next.js + DeepSeek API. Handles resumes and cover letters.
 
 Free tier: 1 generation. Pro: unlimited.
 
-https://your-domain.com
+https://whole-pants-flow.loca.lt
 
 Tech stack: Next.js 14, Clerk auth, Stripe subscriptions.
 
