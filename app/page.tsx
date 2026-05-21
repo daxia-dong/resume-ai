@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 import { useTranslation } from "react-i18next";
 import { ClipboardCheck, Sparkles, ArrowUpRight, Lock } from "lucide-react";
+import posthog from "posthog-js";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Home() {
@@ -26,11 +27,13 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("success") === "true") {
       setUpgraded(true);
+      posthog.capture("payment_success");
       window.history.replaceState({}, "", "/");
     }
   }, []);
 
   async function generate() {
+    posthog.capture("click_create_resume");
     setError("");
     setLoading(true);
     setResult("");
@@ -43,11 +46,13 @@ export default function Home() {
     if (data.limitReached) { setError(t("status.limit_reached")); setLoading(false); return; }
     if (data.error) { setError(data.error); setLoading(false); return; }
     setResult(data.text);
+    posthog.capture("resume_generated");
     setGenerateCount((c) => c + 1);
     setLoading(false);
   }
 
   async function upgrade() {
+    posthog.capture("click_upgrade");
     const res = await fetch("/api/stripe", { method: "POST" });
     const data = await res.json();
     window.location.href = data.url;
