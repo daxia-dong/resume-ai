@@ -1,17 +1,30 @@
-import Stripe from "stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia",
-});
+let stripeInstance: any = null;
+
+function getStripe() {
+  if (!stripeInstance) {
+    const Stripe = require("stripe");
+    const key = process.env.STRIPE_SECRET_KEY || "";
+    stripeInstance = new Stripe(key, { apiVersion: "2026-04-22.dahlia" });
+  }
+  return stripeInstance;
+}
 
 export async function POST(req: Request) {
+  // Stripe key 没配 → 模拟模式
+  if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes("***")) {
+    console.log("🧪 [TEST MODE] Webhook 模拟");
+    return NextResponse.json({ received: true });
+  }
+
   const body = await req.text();
   const headersList = await headers();
   const sig = headersList.get("stripe-signature") as string;
 
-  let event: Stripe.Event;
+  const stripe = getStripe();
+  let event: any;
 
   try {
     event = stripe.webhooks.constructEvent(
@@ -26,16 +39,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // 支付成功事件
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const customerEmail = session.customer_email;
-    console.log("💰 Payment successful:", customerEmail);
-
-    // TODO: 接用户系统后
-    // 1. 通过 email 找到 Clerk user
-    // 2. 更新 Supabase plan = pro
-    // 3. 解锁无限生成
+    const session = event.data.object;
+    console.log("💰 Payment successful:", session.customer_email);
   }
 
   return NextResponse.json({ received: true });

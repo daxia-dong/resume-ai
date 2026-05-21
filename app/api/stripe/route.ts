@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 const key = process.env.STRIPE_SECRET_KEY || "";
 
-// 没配真实 key → 模拟模式（开发用）
 function isTestMode() {
   return !key || !key.startsWith("sk_");
 }
