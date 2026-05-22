@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "AI Resume Builder - Free ATS Resume & Cover Letter Generator",
   description: "Generate professional ATS-friendly resumes and cover letters with AI in seconds. Free to start. Used by thousands of job seekers.",
+  verification: {
+    google: "_JH36mq6y8XlAG107ffbJXkZRjsTJNgyTFYoFnoDf2Q",
+  },
   openGraph: {
     title: "AI Resume Builder - Free ATS Resume Generator",
     description: "Generate professional resumes and cover letters with AI. No signup required to start.",
