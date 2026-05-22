@@ -27,5 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/cover-letter-ai-generator`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/free-resume-builder`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/free-resume-generator-ai`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/blog/how-to-write-a-software-engineer-resume`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/blog/ats-resume-tips`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/blog/best-resume-skills-for-2026`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/blog/how-to-pass-ats-screening`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/blog/how-to-write-a-cover-letter`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
   ];
 }
