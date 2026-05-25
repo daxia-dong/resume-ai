@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ClipboardCheck, Sparkles, Lock } from "lucide-react";
 import posthog from "posthog-js";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import RoastMyResume from "@/components/RoastMyResume";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -203,6 +204,16 @@ export default function Home() {
                 {result}
               </pre>
             </div>
+          )}
+
+          {/* Roast My Resume */}
+          {result && (
+            <RoastMyResume
+              jobTitle={jobTitle}
+              experience={experience}
+              skills={skills}
+              resume={result}
+            />
           )}
 
           {/* Footer */}

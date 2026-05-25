@@ -218,8 +218,88 @@ export const seoPages: SEOPage[] = [
     intro: "The right resume format can make the difference between an interview and rejection. In 2026, clean ATS-friendly formats consistently outperform creative layouts.",
     jobTitle: "Software Engineer",
     relatedSlugs: ["software-engineer-resume-example","remote-job-resume-template","resume-keywords-for-tech-jobs","ats-friendly-resume-checker"],
-  }
+  },
 
+  {
+    slug: "product-manager-resume",
+    title:
+      "Product Manager Resume Example - 2026 Template & Skills | AI Resume Builder",
+    description:
+      "A complete product manager resume example with strategy, analytics, and leadership skills. Learn how to craft a PM resume that gets interviews. Free AI resume builder included.",
+    ogTitle: "Product Manager Resume Example & Template (2026)",
+    ogDescription:
+      "See a real product manager resume example with PM skills, experience, and ATS tips. Build yours free.",
+    h1: "Product Manager Resume Example: 2026 Template & Guide",
+    intro:
+      "Product management is one of the most competitive fields in tech. A strong PM resume needs to demonstrate strategic thinking, cross-functional leadership, data-driven decision making, and product delivery — all in one page. This guide breaks down exactly what recruiters and hiring managers look for.",
+    jobTitle: "Product Manager",
+    relatedSlugs: [
+      "software-engineer-resume-example",
+      "data-scientist-resume-example",
+      "product-manager-cover-letter",
+      "frontend-developer-resume-example",
+    ],
+  },
+  {
+    slug: "data-analyst-resume",
+    title:
+      "Data Analyst Resume Example - 2026 Template & Skills | AI Resume Builder",
+    description:
+      "A complete data analyst resume example with SQL, Python, and Tableau skills. Learn what recruiters look for in a data analyst resume. Free AI resume builder included.",
+    ogTitle: "Data Analyst Resume Example & Template (2026)",
+    ogDescription:
+      "See a real data analyst resume example. Build yours free with AI.",
+    h1: "Data Analyst Resume Example: 2026 Template & Skills Guide",
+    intro:
+      "Data analysts are in high demand across every industry. A strong data analyst resume needs to demonstrate technical proficiency in SQL, Python, and visualization tools while showing how your insights drive real business decisions. This guide shows you exactly what works.",
+    jobTitle: "Data Analyst",
+    relatedSlugs: [
+      "data-scientist-resume-example",
+      "software-engineer-resume-example",
+      "product-manager-resume",
+      "resume-keywords-for-tech-jobs",
+    ],
+  },
+  {
+    slug: "cover-letter-generator",
+    title:
+      "AI Cover Letter Generator - Free, Fast & Personalized | AI Resume Builder",
+    description:
+      "Generate a professional cover letter in seconds with our free AI cover letter generator. Personalized for any role, ATS-friendly, and ready to download. No signup required.",
+    ogTitle: "Free AI Cover Letter Generator (2026)",
+    ogDescription:
+      "Generate a personalized cover letter in seconds with AI. Free, no signup.",
+    h1: "AI Cover Letter Generator: Write Professional Cover Letters in Seconds",
+    intro:
+      "Writing a cover letter from scratch is time-consuming and stressful. Our free AI cover letter generator creates a personalized, professional cover letter tailored to your experience and the specific role you're applying for — in under 30 seconds.",
+    jobTitle: "Cover Letter",
+    relatedSlugs: [
+      "product-manager-cover-letter",
+      "marketing-manager-cover-letter",
+      "software-engineer-resume-example",
+      "ai-cover-letter-generator",
+    ],
+  },
+  {
+    slug: "resume-summary-examples",
+    title:
+      "Resume Summary Examples - 2026 Guide & Templates | AI Resume Builder",
+    description:
+      "50+ professional resume summary examples for software engineers, product managers, data analysts, and more. Learn how to write a resume summary that gets interviews. Free AI builder.",
+    ogTitle: "Resume Summary Examples - 50+ Templates (2026)",
+    ogDescription:
+      "Professional resume summary examples for every role. Write yours with AI.",
+    h1: "Resume Summary Examples: 50+ Professional Templates for 2026",
+    intro:
+      "Your resume summary is the first thing recruiters read — and often the only thing they remember. A strong summary can double your interview callback rate. This guide includes resume summary examples for software engineers, product managers, data analysts, recent graduates, and career changers.",
+    jobTitle: "Resume Summary",
+    relatedSlugs: [
+      "software-engineer-resume-example",
+      "product-manager-resume",
+      "data-analyst-resume",
+      "best-resume-format-2026",
+    ],
+  },
 ];
 
 export function getSEOPage(slug: string): SEOPage | undefined {
